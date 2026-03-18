@@ -18,26 +18,6 @@ if (quoteForm && formMessage) {
   });
 }
 
-const defaultProducts = [
-  {
-    name: 'Smart Panel Upgrade',
-    description: 'Increase capacity, safety, and monitoring with a modern smart-ready panel.'
-  },
-  {
-    name: 'EV Fast Charger Bundle',
-    description: 'Level 2 charger + dedicated circuit + permit assistance for reliable home charging.'
-  },
-  {
-    name: 'Whole-Home Surge Shield',
-    description: 'Protect electronics and appliances from sudden voltage spikes and outages.'
-  }
-];
-
-const storageKey = 'amped-products';
-const adminSessionKey = 'amped-admin-auth';
-const adminUsername = 'Adm1n';
-const adminPassword = '!2345678';
-
 const productList = document.querySelector('#product-list');
 const adminModal = document.querySelector('#admin-modal');
 const adminOpenBtn = document.querySelector('#admin-open');
@@ -47,34 +27,27 @@ const adminProductsForm = document.querySelector('#admin-products');
 const adminLogoutBtn = document.querySelector('#admin-logout');
 const adminMessage = document.querySelector('#admin-message');
 
-const loadProducts = () => {
-  const stored = localStorage.getItem(storageKey);
-  if (!stored) {
-    return defaultProducts;
+const showAdminMessage = (message, type = '') => {
+  if (!adminMessage) {
+    return;
   }
 
-  try {
-    const parsed = JSON.parse(stored);
-    if (Array.isArray(parsed) && parsed.length === 3) {
-      return parsed;
-    }
-  } catch {
-    return defaultProducts;
-  }
-
-  return defaultProducts;
+  adminMessage.textContent = message;
+  adminMessage.className = type;
 };
 
-const saveProducts = (products) => {
-  localStorage.setItem(storageKey, JSON.stringify(products));
+const fetchProducts = async () => {
+  const response = await fetch('/api/products', { credentials: 'same-origin' });
+  const data = await response.json();
+  return data.products || [];
 };
 
-const renderProducts = () => {
+const renderProducts = async () => {
   if (!productList) {
     return;
   }
 
-  const products = loadProducts();
+  const products = await fetchProducts();
   productList.innerHTML = '';
 
   products.forEach((product) => {
@@ -85,39 +58,43 @@ const renderProducts = () => {
   });
 };
 
-const isAdminAuthenticated = () => localStorage.getItem(adminSessionKey) === 'true';
+const checkAdminSession = async () => {
+  const response = await fetch('/api/session', { credentials: 'same-origin' });
+  const data = await response.json();
+  return data.authenticated === true;
+};
 
-const setAdminState = (authenticated) => {
-  if (!adminLoginForm || !adminProductsForm || !adminMessage) {
+const setAdminState = async () => {
+  if (!adminLoginForm || !adminProductsForm) {
     return;
   }
 
+  const authenticated = await checkAdminSession();
   adminLoginForm.hidden = authenticated;
   adminProductsForm.hidden = !authenticated;
-  adminMessage.textContent = authenticated
-    ? 'Logged in. Update product cards and click save.'
-    : 'Sign in to manage product cards.';
-  adminMessage.className = authenticated ? 'success' : '';
+
+  if (!authenticated) {
+    showAdminMessage('Sign in to manage product cards.');
+    return;
+  }
+
+  const products = await fetchProducts();
+  adminProductsForm.elements.name1.value = products[0]?.name || '';
+  adminProductsForm.elements.desc1.value = products[0]?.description || '';
+  adminProductsForm.elements.name2.value = products[1]?.name || '';
+  adminProductsForm.elements.desc2.value = products[1]?.description || '';
+  adminProductsForm.elements.name3.value = products[2]?.name || '';
+  adminProductsForm.elements.desc3.value = products[2]?.description || '';
+  showAdminMessage('Logged in. Update product cards and click save.', 'success');
 };
 
-const openAdminModal = () => {
+const openAdminModal = async () => {
   if (!adminModal) {
     return;
   }
 
   adminModal.hidden = false;
-  const authenticated = isAdminAuthenticated();
-  setAdminState(authenticated);
-
-  if (authenticated && adminProductsForm) {
-    const products = loadProducts();
-    adminProductsForm.elements.name1.value = products[0].name;
-    adminProductsForm.elements.desc1.value = products[0].description;
-    adminProductsForm.elements.name2.value = products[1].name;
-    adminProductsForm.elements.desc2.value = products[1].description;
-    adminProductsForm.elements.name3.value = products[2].name;
-    adminProductsForm.elements.desc3.value = products[2].description;
-  }
+  await setAdminState();
 };
 
 const closeAdminModal = () => {
@@ -127,38 +104,48 @@ const closeAdminModal = () => {
 };
 
 if (adminOpenBtn) {
-  adminOpenBtn.addEventListener('click', openAdminModal);
+  adminOpenBtn.addEventListener('click', () => {
+    openAdminModal().catch(() => {
+      showAdminMessage('Unable to open admin panel. Try refreshing.', 'error');
+    });
+  });
 }
 
 if (adminCloseBtn) {
   adminCloseBtn.addEventListener('click', closeAdminModal);
 }
 
-if (adminLoginForm && adminMessage) {
-  adminLoginForm.addEventListener('submit', (event) => {
+if (adminLoginForm) {
+  adminLoginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(adminLoginForm);
-    const username = formData.get('username')?.toString().trim();
-    const password = formData.get('password')?.toString();
+    const username = formData.get('username')?.toString().trim() || '';
+    const password = formData.get('password')?.toString() || '';
 
-    if (username === adminUsername && password === adminPassword) {
-      localStorage.setItem(adminSessionKey, 'true');
-      setAdminState(true);
-      openAdminModal();
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    });
+
+    if (!response.ok) {
+      showAdminMessage('Invalid credentials. Please try again.', 'error');
       return;
     }
 
-    adminMessage.textContent = 'Invalid credentials. Please try again.';
-    adminMessage.className = 'error';
+    await setAdminState();
   });
 }
 
-if (adminProductsForm && adminMessage) {
-  adminProductsForm.addEventListener('submit', (event) => {
+if (adminProductsForm) {
+  adminProductsForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const updatedProducts = [
+    const products = [
       {
         name: adminProductsForm.elements.name1.value.trim(),
         description: adminProductsForm.elements.desc1.value.trim()
@@ -173,20 +160,35 @@ if (adminProductsForm && adminMessage) {
       }
     ];
 
-    saveProducts(updatedProducts);
-    renderProducts();
-    adminMessage.textContent = 'Product cards updated successfully.';
-    adminMessage.className = 'success';
+    const response = await fetch('/api/admin/products', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ products })
+    });
+
+    if (!response.ok) {
+      showAdminMessage('Unable to save product updates.', 'error');
+      return;
+    }
+
+    await renderProducts();
+    showAdminMessage('Product cards updated successfully.', 'success');
   });
 }
 
-if (adminLogoutBtn && adminMessage) {
-  adminLogoutBtn.addEventListener('click', () => {
-    localStorage.removeItem(adminSessionKey);
-    setAdminState(false);
-    adminMessage.textContent = 'Logged out successfully.';
-    adminMessage.className = 'success';
+if (adminLogoutBtn) {
+  adminLogoutBtn.addEventListener('click', async () => {
+    await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
+    await setAdminState();
+    showAdminMessage('Logged out successfully.', 'success');
   });
 }
 
-renderProducts();
+renderProducts().catch(() => {
+  if (productList) {
+    productList.innerHTML = '<p>Unable to load products at the moment.</p>';
+  }
+});
