@@ -1,0 +1,7 @@
+.git
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+amped_up.db
+data/

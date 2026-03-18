@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import http.cookies
 import json
+import os
 import secrets
 import sqlite3
 from datetime import datetime, timedelta, timezone
@@ -11,9 +12,9 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 
-HOST = "127.0.0.1"
-PORT = 4173
-DB_PATH = Path("amped_up.db")
+HOST = os.getenv("HOST", "0.0.0.0")
+PORT = int(os.getenv("PORT", "4173"))
+DB_PATH = Path(os.getenv("DB_PATH", "data/amped_up.db"))
 SESSION_COOKIE = "amped_session"
 SESSION_TTL_HOURS = 8
 
@@ -43,6 +44,8 @@ def get_db() -> sqlite3.Connection:
 
 
 def init_db() -> None:
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
     with get_db() as conn:
         conn.execute(
             """

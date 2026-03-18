@@ -1,0 +1,13 @@
+services:
+  web:
+    build: .
+    container_name: amped-up-electrical
+    ports:
+      - "4173:4173"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 4173
+      DB_PATH: /app/data/amped_up.db
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
