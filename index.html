@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amped Up Electrical | Reliable Residential & Commercial Electricians</title>
+    <meta
+      name="description"
+      content="Amped Up Electrical provides safe, professional electrical services for homes and businesses, including panel upgrades, lighting, EV chargers, and emergency repairs."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="logo" href="#home">⚡ Amped Up Electrical</a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="#services">Services</a>
+          <a href="#products">Products</a>
+          <a href="#why-us">Why Us</a>
+          <a href="#testimonials">Reviews</a>
+          <a href="#contact" class="btn btn-small">Get a Free Quote</a>
+          <button id="admin-open" class="btn btn-ghost btn-small" type="button">Admin Panel</button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="hero-bg-glow" aria-hidden="true"></div>
+        <div class="container hero-grid">
+          <div>
+            <p class="eyebrow">Licensed • Insured • Fast Response</p>
+            <h1>Powering Homes & Businesses with Confidence</h1>
+            <p class="lead">
+              From panel upgrades to smart lighting installs, Amped Up Electrical
+              delivers clean, code-compliant work done right the first time.
+            </p>
+            <div class="cta-row">
+              <a href="#contact" class="btn">Book Service</a>
+              <a href="tel:+15551234567" class="btn btn-secondary">Call (555) 123-4567</a>
+            </div>
+            <div class="hero-badges" aria-label="trust badges">
+              <span>⭐ 4.9 Rated</span>
+              <span>🏅 Warranty Backed</span>
+              <span>🕒 24/7 Emergency</span>
+            </div>
+          </div>
+          <aside class="hero-card" aria-label="Quick facts">
+            <h2>What you can expect</h2>
+            <ul>
+              <li>24/7 emergency electrical repairs</li>
+              <li>Transparent pricing with no surprise fees</li>
+              <li>Upfront timelines and clean job sites</li>
+              <li>Friendly, certified technicians</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="services" class="section">
+        <div class="container">
+          <h2>Our Electrical Services</h2>
+          <div class="cards">
+            <article class="card">
+              <h3>Residential Wiring</h3>
+              <p>Safe installs and rewiring projects for remodels, additions, and new construction.</p>
+            </article>
+            <article class="card">
+              <h3>Panel Upgrades</h3>
+              <p>Modernize your electrical panel to support higher loads and improve safety.</p>
+            </article>
+            <article class="card">
+              <h3>Lighting Solutions</h3>
+              <p>Indoor, outdoor, and security lighting design plus energy-efficient LED upgrades.</p>
+            </article>
+            <article class="card">
+              <h3>EV Charger Install</h3>
+              <p>Level 2 home and commercial charger installation with permit support.</p>
+            </article>
+            <article class="card">
+              <h3>Commercial Electrical</h3>
+              <p>Reliable electrical maintenance, tenant improvements, and troubleshooting.</p>
+            </article>
+            <article class="card">
+              <h3>Emergency Repairs</h3>
+              <p>Rapid response for outages, tripped breakers, burning smells, and urgent issues.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="products" class="section section-alt">
+        <div class="container">
+          <div class="section-head">
+            <h2>Featured Products & Upgrades</h2>
+            <p>Admin can update these cards from the built-in panel.</p>
+          </div>
+          <div id="product-list" class="product-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="why-us" class="section">
+        <div class="container split">
+          <div>
+            <h2>Why Choose Amped Up Electrical?</h2>
+            <p>
+              We combine technical precision with clear communication. You get a dependable
+              team that shows up on time, explains your options, and treats your property
+              with respect.
+            </p>
+            <ul class="checklist">
+              <li>Background-checked and certified electricians</li>
+              <li>Code-compliant work backed by workmanship warranty</li>
+              <li>Flexible scheduling including evenings and weekends</li>
+            </ul>
+          </div>
+          <div class="stats">
+            <div><strong>10+</strong><span>Years Experience</span></div>
+            <div><strong>2,000+</strong><span>Projects Completed</span></div>
+            <div><strong>4.9/5</strong><span>Average Customer Rating</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" class="section section-alt">
+        <div class="container">
+          <h2>What Customers Say</h2>
+          <div class="testimonials">
+            <blockquote>
+              “They diagnosed our panel issue quickly and had us back up the same day. Super professional.”
+              <cite>— Jordan M.</cite>
+            </blockquote>
+            <blockquote>
+              “Great communication and fair pricing. The new recessed lighting looks incredible.”
+              <cite>— Priya S.</cite>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container">
+          <h2>Request Your Free Quote</h2>
+          <form id="quote-form" class="quote-form">
+            <label>
+              Name
+              <input type="text" name="name" required />
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" required />
+            </label>
+            <label>
+              Phone
+              <input type="tel" name="phone" required />
+            </label>
+            <label>
+              Service Needed
+              <select name="service" required>
+                <option value="">Choose one</option>
+                <option>Panel Upgrade</option>
+                <option>Lighting Installation</option>
+                <option>EV Charger Installation</option>
+                <option>Emergency Repair</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label class="full-width">
+              Project Details
+              <textarea name="details" rows="4" placeholder="Tell us briefly what you need."></textarea>
+            </label>
+            <button type="submit" class="btn">Submit Request</button>
+            <p id="form-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <div id="admin-modal" class="modal" hidden>
+      <div class="modal-backdrop" id="admin-close" aria-hidden="true"></div>
+      <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+        <h2 id="admin-title">Admin Product Panel</h2>
+        <p class="admin-hint">Use default credentials: <strong>Adm1n / !2345678</strong></p>
+
+        <form id="admin-login" class="admin-form">
+          <label>Username <input name="username" type="text" autocomplete="username" required /></label>
+          <label>Password <input name="password" type="password" autocomplete="current-password" required /></label>
+          <button type="submit" class="btn">Sign In</button>
+        </form>
+
+        <form id="admin-products" class="admin-form" hidden>
+          <label>Product 1 Name <input name="name1" type="text" required /></label>
+          <label>Product 1 Description <textarea name="desc1" rows="2" required></textarea></label>
+          <label>Product 2 Name <input name="name2" type="text" required /></label>
+          <label>Product 2 Description <textarea name="desc2" rows="2" required></textarea></label>
+          <label>Product 3 Name <input name="name3" type="text" required /></label>
+          <label>Product 3 Description <textarea name="desc3" rows="2" required></textarea></label>
+          <button type="submit" class="btn">Save Product Updates</button>
+          <button id="admin-logout" type="button" class="btn btn-secondary">Log Out</button>
+        </form>
+
+        <p id="admin-message" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <p>© <span id="year"></span> Amped Up Electrical. All rights reserved.</p>
+        <p><a href="mailto:hello@ampedupelectrical.com">hello@ampedupelectrical.com</a></p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
